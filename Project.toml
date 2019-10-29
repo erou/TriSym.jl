@@ -1,0 +1,11 @@
+name = "TriSym"
+uuid = "ed0a1499-7718-43b8-960d-e9b90d71ff34"
+version = "0.0.1"
+
+[deps]
+
+Nemo = "2edaba10-b0f1-5616-af89-8c11ac63239a"
+
+[compat]
+
+julia = "1"
