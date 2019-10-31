@@ -78,3 +78,7 @@ function add!(b::BilinearMap{N}, decomp::Tuple{Vararg{Tuple{Nemo.fq_nmod, Int}}}
         end
     end
 end
+
+function copy(b::BilinearMap{N}) where N
+    return BilinearMap(deepcopy(coord(b)), base_ring(b))
+end
