@@ -11,9 +11,11 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::AffineFieldElements,
          Int}}}, 1}, count::Int, bound::Int, G::Array{Tuple{Nemo.fq_nmod, Int},
          1} = Tuple{Nemo.fq_nmod, Int}[]) where N
 
-    #println("G, bound =")
+    #println("G, count, bound, E =")
     #println(G)
+    #println(count)
     #println(bound)
+    #println(E)
     r = rank(b)
     p::Int = Nemo.base_ring(parent(b)).n
 
@@ -41,7 +43,7 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::AffineFieldElements,
             for j in 1:len
                 y, c = elems[j]
                 B2 = elems0[j+1:end]
-                G2 = Base.copy(G) #not **deep** copy, be careful!
+                G2 = deepcopy(G) #not **deep** copy, be careful!
                 push!(G2, (y, c))
                 tri_symmetric_search_coord(b-c*d[y], B2, d, L, bound-1, G2)
             end
@@ -49,16 +51,16 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::AffineFieldElements,
         else
             for x in E
                 y = next(E, x)
-                E2 = AffineFieldElements(k, j, y)
+                E2 = AffineFieldElements(E.parent, E.coord, y)
                 for c in 1:p-1
-                    t2 = t-c*d[x]
-                    r2 = rank(t2)
-                    G2 = copy(G)
+                    b2 = b-c*d[x]
+                    r2 = rank(b2)
+                    G2 = deepcopy(G) #not **deep** copy, be careful!
                     push!(G2, (deepcopy(x), c))
                     if r2 < r
-                        tri_symmetric_search_coord(t2, E2, d, L, count, bound-1, G2)
+                        tri_symmetric_search_coord(b2, E2, d, L, count, bound-1, G2)
                     elseif r2 == r
-                        tri_symmetric_search_coord(t2, E2, d, L, count-1, bound-1, G2)
+                        tri_symmetric_search_coord(b2, E2, d, L, count-1, bound-1, G2)
                     end
                 end
             end
@@ -70,9 +72,10 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::Array{fq_nmod, 1},
          d::Dict{Nemo.fq_nmod, Nemo.nmod_mat}, L::Array{Tuple{Vararg{Tuple{Nemo.fq_nmod,
          Int}}}, 1}, bound::Int, G::Array{Tuple{Nemo.fq_nmod, Int}, 1}) where N
 
-    #println("* G, bound =")
+    #println("* G, bound, E =")
     #println(G)
     #println(bound)
+    #println(E)
     r = rank(b)
     p::Int = Nemo.base_ring(parent(b)).n
 
@@ -95,7 +98,7 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::Array{fq_nmod, 1},
             for j in 1:len
                 y, c = elems[j]
                 B2 = elems0[j+1:end]
-                G2 = Base.copy(G) #not **deep** copy, be careful!
+                G2 = deepcopy(G) #not **deep** copy, be careful!
 
                 push!(G2, (y, c))
                 tri_symmetric_search_coord(b-c*d[y], B2, d, L, bound-1, G2)
@@ -109,10 +112,12 @@ function tri_symmetric_search(B::BilinearMap{N}, d::Dict{Nemo.fq_nmod,
          1}, counts::NTuple{N, Int}, bound::Int, j::Int = 1,
          Lloc::Array{Tuple{Nemo.fq_nmod, Int}, 1} = Tuple{Nemo.fq_nmod, Int}[]) where N
 
+    #println("*****")
     #println("B, Lloc, j = ")
     #println(B)
     #println(Lloc)
     #println(j)
+    #println("*****")
     if iszero(B)
         push!(Lglob, Tuple(Lloc))
     elseif rank(B[j]) <= bound
@@ -130,7 +135,7 @@ function tri_symmetric_search(B::BilinearMap{N}, d::Dict{Nemo.fq_nmod,
         for m in M
             B2 = copy(B)
             add!(B2, m, j, d)
-            Lloc2 = Base.copy(Lloc) #not **deep** copy, be careful!
+            Lloc2 = deepcopy(Lloc) #not **deep** copy, be careful!
             append!(Lloc2, m)
             tri_symmetric_search(B2, d, Lglob, counts, bound-length(m), j+1, Lloc2)
             #res = tri_symmetric_search(B2, d, Lglob, counts, bound-length(m), j+1, Lloc2)

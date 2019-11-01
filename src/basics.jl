@@ -83,7 +83,8 @@ end
 function Base.iterate(k::AffineFieldElements)
     z = k.first
     if z != 0
-        return (z, z)
+        zz = deepcopy(z)
+        return (zz, zz)
     end
 end
 
@@ -116,7 +117,7 @@ function Base.iterate(k::AffineFieldElements, state::Nemo.fq_nmod)
 end
 
 function next(k::AffineFieldElements, state::Nemo.fq_nmod)
-    nex = Base.iterate(k, state)
+    nex = Base.iterate(k, deepcopy(state))
     if nex == nothing
         return k.parent()
     else
