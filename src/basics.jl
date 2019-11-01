@@ -67,6 +67,7 @@ function Base.iterate(k::Nemo.FqNmodFiniteField, state::Nemo.fq_nmod)
 end
 
 # iterate through elements without actually constructing the array
+# Seems like a **very** poor idea though
 
 struct AffineFieldElements
     parent::Nemo.FqNmodFiniteField
@@ -124,7 +125,19 @@ function next(k::AffineFieldElements, state::Nemo.fq_nmod)
         return nex[1]
     end
 end
-    
+
+function AffineFieldElements2(k::Nemo.FqNmodFiniteField, c::Int)
+    p::BigInt = characteristic(k)
+    d = degree(k)
+    A = Array{Nemo.fq_nmod, 1}(undef, p^(d-c))
+    j = 1
+    for x in AffineFieldElements(k, c)
+        A[j] = deepcopy(x)
+        j += 1
+    end
+    return A
+end
+   
 #######################################################
 #
 # Dictionnary
@@ -171,4 +184,19 @@ function multiplication_bilinear_map(k::Nemo.FqNmodFiniteField)
         pop!(T)
     end
     return BilinearMap(T, k)
+end
+
+function submul(a::Nemo.nmod_mat, b::Nemo.nmod_mat, c::UInt)
+    res = b*c
+    ccall((:nmod_mat_sub, :libflint), Nothing,
+          (Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}), res, a, res)
+    return res
+end
+
+function submul!(res::Nemo.nmod_mat, a::Nemo.nmod_mat, b::Nemo.nmod_mat, c::UInt)
+    ccall((:nmod_mat_scalar_mul, :libflint), Nothing,
+          (Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}, UInt), res, b, c)
+    ccall((:nmod_mat_sub, :libflint), Nothing,
+          (Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}), res, a, res)
+    return res
 end
