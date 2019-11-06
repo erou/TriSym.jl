@@ -186,6 +186,12 @@ function multiplication_bilinear_map(k::Nemo.FqNmodFiniteField)
     return BilinearMap(T, k)
 end
 
+#######################################################
+#
+# Ad hoc function to save allocations
+#
+#######################################################
+
 function submul(a::Nemo.nmod_mat, b::Nemo.nmod_mat, c::UInt)
     res = b*c
     ccall((:nmod_mat_sub, :libflint), Nothing,
@@ -198,5 +204,4 @@ function submul!(res::Nemo.nmod_mat, a::Nemo.nmod_mat, b::Nemo.nmod_mat, c::UInt
           (Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}, UInt), res, b, c)
     ccall((:nmod_mat_sub, :libflint), Nothing,
           (Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}, Ref{Nemo.nmod_mat}), res, a, res)
-    return res
 end
