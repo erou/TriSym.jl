@@ -1,4 +1,3 @@
-using TriSym
-using Test
+using Nemo, TriSym, Test
 
 include("search-test.jl")
