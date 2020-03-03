@@ -2,7 +2,9 @@ module TriSym
 
 using Nemo
 
-import Nemo: ==
+import Base: +, *, copy, show, getindex, setindex!, parent, zero
+import Nemo: ==, characteristic, base_ring, nmod, nmod_mat, fq_nmod, rank,
+degree
 
 #######################################################
 #

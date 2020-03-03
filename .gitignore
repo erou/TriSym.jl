@@ -3,3 +3,4 @@
 *.jl.mem
 deps/deps.jl
 *.swp
+src/search2.jl
