@@ -1,4 +1,4 @@
-module TriSym
+#module TriSym
 
 using Nemo
 
@@ -24,6 +24,14 @@ include("basics.jl")
 
 #######################################################
 #
+# Functions searching for one decomposition
+#
+#######################################################
+
+include("fast-search.jl")
+
+#######################################################
+#
 # Functions searching for decompositions
 #
 #######################################################
@@ -31,4 +39,4 @@ include("basics.jl")
 include("search.jl")
 #include("search2.jl")
 
-end
+#end

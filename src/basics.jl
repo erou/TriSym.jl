@@ -4,7 +4,7 @@
 #
 #######################################################
 
-export multiplication_bilinear_map, make_conversion_dict
+export multiplication_bilinear_map, make_conversion_dict, make_conversion_dict2
 
 """
     trace_to_bil(x::Nemo.fq_nmod)
@@ -21,6 +21,34 @@ function trace_to_bil(x::Nemo.fq_nmod)
     for j in 1:n
         a[j, 1] = coeff(tr(x * g^(j-1)), 0)
     end
+    return a * transpose(a)
+end
+
+function vector(x::Nemo.fq_nmod, S::Nemo.NmodMatSpace)
+    a = S()
+    for j in 1:nrows(S)
+        a[j, 1] = coeff(x, j-1)
+    end
+    return a
+end
+
+function make_traces_matrix(k::Nemo.FqNmodFiniteField)
+    n = degree(k)
+    p::Int = characteristic(k)
+    S = MatrixSpace(ResidueRing(ZZ, p), n, n)
+    M = S()
+    g = gen(k)
+    for j in 1:n
+        for i in 1:n
+            M[i, j] = coeff(tr(g^(i+j-2)), 0)
+        end
+    end
+    return M
+end
+
+function trace_to_bil(x::Nemo.fq_nmod, M::Nemo.nmod_mat, S::Nemo.NmodMatSpace)
+    v = vector(x, S)
+    a = M*v
     return a * transpose(a)
 end
 
@@ -209,6 +237,18 @@ function make_conversion_dict(k::Nemo.FqNmodFiniteField)
     d = Dict{Nemo.fq_nmod, Nemo.nmod_mat}()
     for x in k
         d[deepcopy(x)] = trace_to_bil(x)
+    end
+    return d
+end
+
+function make_conversion_dict2(k::Nemo.FqNmodFiniteField)
+    d = Dict{Nemo.fq_nmod, Nemo.nmod_mat}()
+    n = degree(k)
+    p::Int = characteristic(k)
+    T = make_traces_matrix(k)
+    S = MatrixSpace(ResidueRing(ZZ, p), n, 1)
+    for x in k
+        d[deepcopy(x)] = trace_to_bil(x, T, S)
     end
     return d
 end

@@ -23,11 +23,11 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::Array{Nemo.fq_nmod, 1},
          Int}}}, 1}, count::Int, bound::Int, G::Array{Tuple{Nemo.fq_nmod, Int},
          1} = Tuple{Nemo.fq_nmod, Int}[]) where N
 
-    #println("G, count, bound, E =")
-    #println(G)
-    #println(count)
-    #println(bound)
-    #println(E)
+#    println("G, count, bound, E =")
+#    println(G)
+#    println(count)
+#    println(bound)
+#    println(E)
     r = rank(b)
     p::UInt = Nemo.base_ring(parent(b)).n
 
@@ -86,10 +86,10 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::Array{fq_nmod, 1},
          d::Dict{Nemo.fq_nmod, Nemo.nmod_mat}, L::Array{Tuple{Vararg{Tuple{Nemo.fq_nmod,
          Int}}}, 1}, bound::Int, G::Array{Tuple{Nemo.fq_nmod, Int}, 1}) where N
 
-    #println("* G, bound, E =")
-    #println(G)
-    #println(bound)
-    #println(E)
+#    println("* G, bound, E =")
+#    println(G)
+#    println(bound)
+#    println(E)
     r = rank(b)
     p::UInt = Nemo.base_ring(parent(b)).n
 
@@ -126,12 +126,12 @@ function tri_symmetric_search(B::BilinearMap{N}, d::Dict{Nemo.fq_nmod,
          1}, counts::NTuple{N, Int}, bound::Int, j::Int = 1,
          Lloc::Array{Tuple{Nemo.fq_nmod, Int}, 1} = Tuple{Nemo.fq_nmod, Int}[]) where N
 
-    #println("*****")
-    #println("B, Lloc, j = ")
-    #println(B)
-    #println(Lloc)
-    #println(j)
-    #println("*****")
+#    println("*****")
+#    println("B, Lloc, j = ")
+#    println(B)
+#    println(Lloc)
+#    println(j)
+#    println("*****")
     if iszero(B)
         push!(Lglob, Tuple(Lloc))
     elseif rank(B[j]) <= bound
