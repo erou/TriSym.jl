@@ -1,4 +1,4 @@
-#module TriSym
+module TriSym
 
 using Nemo
 
@@ -39,4 +39,4 @@ include("fast-search.jl")
 include("search.jl")
 #include("search2.jl")
 
-#end
+end
