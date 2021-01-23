@@ -46,7 +46,7 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::Array{Nemo.fq_nmod, 1},
                 #    end
                     submul!(b2, b, d[x], c)
                     if rank(b2) < r
-                        push!(elems, (x, c, Base.copy(b2)))
+                        push!(elems, (x, c, Base.deepcopy(b2)))
                         break
                     end
                 end
@@ -103,7 +103,7 @@ function tri_symmetric_search_coord(b::Nemo.nmod_mat, E::Array{fq_nmod, 1},
                 for c in 1:p-1
                     submul!(b2, b, d[x], c)
                     if rank(b2) < r
-                        push!(elems, (x, c, Base.copy(b2)))
+                        push!(elems, (x, c, Base.deepcopy(b2)))
                         break
                     end
                 end
@@ -238,7 +238,7 @@ function tri_symmetric_search_coord_memo(b::Nemo.nmod_mat, E::Array{Nemo.fq_nmod
                 #    end
                     submul!(b2, b, d[x], c)
                     if rank(b2) < r
-                        push!(elems, (x, c, Base.copy(b2)))
+                        push!(elems, (x, c, Base.deepcopy(b2)))
                         break
                     end
                 end
@@ -321,7 +321,7 @@ function tri_symmetric_search_coord_memo(b::Nemo.nmod_mat, E::Array{fq_nmod, 1},
                 #    end
                     submul!(b2, b, d[x], c)
                     if rank(b2) < r
-                        push!(elems, (x, c, Base.copy(b2)))
+                        push!(elems, (x, c, Base.deepcopy(b2)))
                         break
                     end
                 end
@@ -436,7 +436,7 @@ function tri_symmetric_search_coord(b::nmod_mat, E::Array{nmod_mat, 1},
                 #    end
                     submul!(b2, b, d[x], c)
                     if rank(b2) < r
-                        push!(elems, (x, c, copy(b2)))
+                        push!(elems, (x, c, deepcopy(b2)))
                         break
                     end
                 end
@@ -493,7 +493,7 @@ function tri_symmetric_search_coord(b::nmod_mat, E::Array{nmod_mat, 1},
                 for c in 1:p-1
                     submul!(b2, b, d[x], c)
                     if rank(b2) < r
-                        push!(elems, (x, c, Base.copy(b2)))
+                        push!(elems, (x, c, Base.deepcopy(b2)))
                         break
                     end
                 end
@@ -598,7 +598,7 @@ function tri_symmetric_search_coord(b::nmod_mat, E::Tuple{Vararg{U}},
                 #    end
                     submul!(b2, b, d[x + 0x01], UInt(c))
                     if rank(b2) < r
-                        push!(elems, (x, c, copy(b2)))
+                        push!(elems, (x, c, deepcopy(b2)))
                         break
                     end
                 end
@@ -656,7 +656,7 @@ function tri_symmetric_search_coord(b::nmod_mat, E::Tuple{Vararg{U}},
                 for c in o:p-1
                     submul!(b2, b, d[x + 0x01], UInt(c))
                     if rank(b2) < r
-                        push!(elems, (x, c, Base.copy(b2)))
+                        push!(elems, (x, c, Base.deepcopy(b2)))
                         break
                     end
                 end
