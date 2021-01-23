@@ -18,9 +18,9 @@ function small_margin(N, n, bound, margin, str = "fixed-margin")
 
     path = joinpath(path_benchmark, str)
     for i in 1:n
-        path = joinpath(path, string("-", margin[i]))
+        path = string(path, "-", margin[i])
     end
-    path = joinpath(path, ".txt")
+    path = string(path, ".txt")
     io = open(path, "w+")
 
     P = primes(3, N)
